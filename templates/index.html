@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>增强记忆小助手</title>
+    <link rel="stylesheet" href="{% static 'django_BiJi/css/bootstrap.min.css' %}">
+    <style>
+        .intro-text {
+            margin-right: 50%;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">增强记忆小助手</a>
+        </div>
+    </nav>
+
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-md-6 intro-text">
+                <h1>增强记忆小助手</h1>
+                <p class="lead">这是一款帮助学生更好学习的应用，它将利用遗忘曲线来帮助用户记忆内容。遗忘曲线是一种科学方法，它根据人类大脑对信息的记忆和遗忘规律，通过合理安排复习时间来帮助用户更好地记忆某些内容。您可以在应用中加入遗忘曲线算法，根据用户的学习情况和进度，为他们提供个性化的复习计划。这样，用户就可以在最佳时间进行复习，从而更好地记忆所学内容。</p>
+                <a href="./main" class="btn btn-primary btn-lg mt-4">立即开始</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'django_BiJi/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

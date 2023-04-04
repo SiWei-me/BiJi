@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>增强记忆小助手</title>
+    <link rel="stylesheet" href="{% static 'django_BiJi/css/bootstrap.min.css' %}">
+    <style>
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .card {
+            margin-right: 1rem;
+            margin-bottom: 1rem;
+            flex: 0 0 calc(33.3333% - 1rem);
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2 bg-secondary fixed-top" style="height: 100vh;">
+                <h2 class="text-light p-3">增强记忆小助手</h2>
+                <ul class="list-group">
+                    <li class="list-group-item">设置选项 1</li>
+                    <li class="list-group-item">设置选项 2</li>
+                    <li class="list-group-item">设置选项 3</li>
+                </ul>
+            </div>
+            <div class="col-md-9 offset-md-3 mt-3">
+                <h2>数据展示</h2>
+                <div class="card-container">
+                    {% for data in datas %}
+                        <a href="{{ data.url }}">
+                            <div class="card bg-light rounded">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ data.name }}</h5>
+                                    <p class="card-text">{{ data.summary }}</p>
+                                </div>
+                            </div>
+                        </a>
+                    {% endfor %}
+                    <a href="./main/add">
+                        <div class="card bg-light rounded">
+                            <div class="card-body">
+                                <h5 class="card-title">ADD +</h5>
+                                <p class="card-text">增加新的笔记！</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'django_BiJi/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>
