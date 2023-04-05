@@ -18,5 +18,8 @@ from django.urls import path
 from Api import views
 
 urlpatterns = [
-    # path('', views.index),
+    path('stave', views.stave),
+    path('delete', views.delete),
+    path('reintr', views.reintr),
+    path('rename', views.rename),
 ]

@@ -11,6 +11,9 @@
     <script>
         const page_id = '{{ page_id }}';
         let page_name = '{{ page_name }}';
+        let page_intr = '{{ pagr_intr }}';
+        let name;
+        let text;
         tinymce.init({
           language:'zh-Hans',
           selector: '#mytextarea',
@@ -21,8 +24,93 @@
           // jQuery
           $("#stave").click(function(){
               // 保存按钮
-              let text=tinymce.activeEditor.getContent({ format: 'text' });
-              alert(text);
+              let text=tinymce.activeEditor.getContent();
+              if (page_id === ''){
+                   $($("#Newname")).modal("show");
+                   return 0;
+              }
+              if (page_intr === ''){
+                   $($("#Newintr")).modal("show");
+                   return 0;
+              }
+              $.post("/api/stave",
+              {
+                  page_id:page_id,
+                  page_name:page_name,
+                  text:text
+              }, function(data,status){
+                  return 0;
+              });
+          });
+          $("#RightNewname").click(function(){
+              text=tinymce.activeEditor.getContent();
+              name=$("#NewNamef").val();
+              if (page_intr === ''){
+                   $($("#Newintr")).modal("show");
+                   return 0;
+              }
+              $.post("/api/stave",
+              {
+                  page_id:page_id,
+                  page_name:name,
+                  text:text
+              }, function(data,status){
+                  $($("#Newname")).modal("hide");
+              });
+          });
+          $("#RightNewintr").click(function(){
+              page_intr = $("#Newintrf").val();
+              if (page_intr.length > 30){
+                  alert("简介字数过长，请缩短简介！");
+                  return 0;
+              }
+              $.post("/api/stave",
+              {
+                  page_id:page_id,
+                  page_name:name,
+                  text:text,
+                  page_intr:page_intr
+              }, function(data,status){
+                  $($("#Newname")).modal("hide");
+              });
+          });
+          $("#DeleteNote").click(function(){
+              // 删除笔记
+              if (page_id === ''){
+                   window.location.href = "/main";
+                   return 0;
+              }
+              $.post("/api/delete",
+              {
+                  page_id:page_id,
+                  page_name:page_name
+              }, function(data,status){
+                  window.location.href = "/main";
+              });
+          });
+          $("#RightRename").click(function(){
+              // 重命名
+              let NewName=$("#NewName").val();
+              $.post("/api/rename",
+              {
+                  page_id:page_id,
+                  page_name:page_name,
+                  new_name:NewName
+              }, function(data,status){
+                  alert(data+"\n"+status)
+              });
+          });
+          $("#RightReintr").click(function(){
+              // 修改简介
+              let NewIntr=$("#Reintrf").val();
+              $.post("/api/reintr",
+              {
+                  page_id:page_id,
+                  page_name:page_name,
+                  new_intr:NewIntr
+              }, function(data,status){
+                  alert(data+"\n"+status)
+              });
           });
         });
     </script>
@@ -47,6 +135,13 @@
                 <a class="dropdown-item">
                     <button type="button" id="rename" class="btn btn-default" data-bs-toggle="modal" data-bs-target="#Rename">
                         改名
+                    </button>
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item">
+                    <button type="button" id="rename" class="btn btn-default" data-bs-toggle="modal" data-bs-target="#Reintr">
+                        改简介
                     </button>
                 </a>
             </li>
@@ -88,14 +183,95 @@
 		  新的文件名
         <div class="input-group mb-3">
 			<span class="input-group-text">file_name</span>
-            <form>
-                <input type="text" class="form-control" placeholder="FileName">
-            </form>
+            <label>
+                <input type="text" class="form-control" placeholder="FileName" id="NewName">
+            </label>
         </div>
       </div>
       <!-- 模态框底部 -->
       <div class="modal-footer">
 		  <button type="button" class="btn btn-primary" id="RightRename">确定</button>
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal">取消</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 模态框 -->
+<div class="modal" id="Newname">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- 模态框头部 -->
+      <div class="modal-header">
+        <h4 class="modal-title">为这个笔记起名</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <!-- 模态框内容 -->
+      <div class="modal-body">
+		  新的文件名
+        <div class="input-group mb-3">
+			<span class="input-group-text">file_name</span>
+            <label>
+                <input type="text" class="form-control" placeholder="FileName" id="NewNamef">
+            </label>
+        </div>
+      </div>
+      <!-- 模态框底部 -->
+      <div class="modal-footer">
+		  <button type="button" class="btn btn-primary" id="RightNewname">确定</button>
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal">取消</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 模态框 -->
+<div class="modal" id="Newintr">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- 模态框头部 -->
+      <div class="modal-header">
+        <h4 class="modal-title">为这个笔记赋予介绍</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <!-- 模态框内容 -->
+      <div class="modal-body">
+		  新的文件的简介(不多于30字)
+        <div class="input-group mb-3">
+			<span class="input-group-text">introduce</span>
+            <label>
+                <input type="text" class="form-control" placeholder="New intr" id="Newintrf">
+            </label>
+        </div>
+      </div>
+      <!-- 模态框底部 -->
+      <div class="modal-footer">
+		  <button type="button" class="btn btn-primary" id="RightNewintr">确定</button>
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal">取消</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 模态框 -->
+<div class="modal" id="Reintr">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- 模态框头部 -->
+      <div class="modal-header">
+        <h4 class="modal-title">修改这个笔记的介绍</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <!-- 模态框内容 -->
+      <div class="modal-body">
+		  文件的简介(不多于30字)
+        <div class="input-group mb-3">
+			<span class="input-group-text">introduce</span>
+            <label>
+                <input type="text" class="form-control" placeholder="Reintr" id="Reintrf">
+            </label>
+        </div>
+      </div>
+      <!-- 模态框底部 -->
+      <div class="modal-footer">
+		  <button type="button" class="btn btn-primary" id="RightReintr">确定</button>
         <button type="button" class="btn btn-light" data-bs-dismiss="modal">取消</button>
       </div>
     </div>

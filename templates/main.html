@@ -32,10 +32,11 @@
                 </ul>
             </div>
             <div class="col-md-9 offset-md-3 mt-3">
-                <h2>数据展示</h2>
+                <h2>笔记</h2>
                 <div class="card-container">
+                    {% autoescape off %}
                     {% for data in datas %}
-                        <a href="{{ data.url }}">
+                        <a href="{{ data.url }}" class="text-decoration-none">
                             <div class="card bg-light rounded">
                                 <div class="card-body">
                                     <h5 class="card-title">{{ data.name }}</h5>
@@ -44,7 +45,8 @@
                             </div>
                         </a>
                     {% endfor %}
-                    <a href="./add">
+                    {% endautoescape %}
+                    <a href="./add" class="text-decoration-none">
                         <div class="card bg-light rounded">
                             <div class="card-body">
                                 <h5 class="card-title">ADD +</h5>
