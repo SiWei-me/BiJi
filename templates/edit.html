@@ -1,0 +1,108 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>增强记忆小助手</title>
+    <link rel="stylesheet" href="{% static 'django_BiJi/css/bootstrap.min.css' %}">
+    <script src="{% static 'django_BiJi/js/tinymce.min.js' %}" referrerpolicy="origin"></script>
+    <script src="{% static 'django_BiJi/js/jquery-3.6.4.min.js' %}" referrerpolicy="origin"></script>
+    <script>
+        const page_id = '{{ page_id }}';
+        let page_name = '{{ page_name }}';
+        tinymce.init({
+          language:'zh-Hans',
+          selector: '#mytextarea',
+          promotion: false,
+          branding: false,
+        });
+        $(document).ready(function(){
+          // jQuery
+          $("#stave").click(function(){
+              // 保存按钮
+              let text=tinymce.activeEditor.getContent({ format: 'text' });
+              alert(text);
+          });
+        });
+    </script>
+</head>
+<body>
+<div class="btn-group">
+    <button type="button" id="stave" class="btn btn-default">保存</button>
+    <a href=".."><button type="button" class="btn btn-default">返回</button></a>
+    <div class="dropdown">
+        <button type="button" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown">
+          设置
+        </button>
+        <ul class="dropdown-menu">
+            <li>
+                <a class="dropdown-item">
+                    <button type="button" id="delete" class="btn btn-default" data-bs-toggle="modal" data-bs-target="#DeleteNote">
+                        删除
+                    </button>
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item">
+                    <button type="button" id="rename" class="btn btn-default" data-bs-toggle="modal" data-bs-target="#Rename">
+                        改名
+                    </button>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- 模态框 删除-->
+<div class="modal" id="DeleteNote">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- 模态框头部 -->
+      <div class="modal-header">
+        <h4 class="modal-title">删除这个笔记</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <!-- 模态框内容 -->
+      <div class="modal-body">
+        确定删除它？删除后将不可恢复（三思而后行）！
+      </div>
+      <!-- 模态框底部 -->
+      <div class="modal-footer">
+		  <button type="button" class="btn btn-danger" id="RightDelete">删除</button>
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal">取消</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 模态框 -->
+<div class="modal" id="Rename">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- 模态框头部 -->
+      <div class="modal-header">
+        <h4 class="modal-title">为这个笔记重命名</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <!-- 模态框内容 -->
+      <div class="modal-body">
+		  新的文件名
+        <div class="input-group mb-3">
+			<span class="input-group-text">file_name</span>
+            <form>
+                <input type="text" class="form-control" placeholder="FileName">
+            </form>
+        </div>
+      </div>
+      <!-- 模态框底部 -->
+      <div class="modal-footer">
+		  <button type="button" class="btn btn-primary" id="RightRename">确定</button>
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal">取消</button>
+      </div>
+    </div>
+  </div>
+</div>
+<label for="mytextarea"></label><textarea id="mytextarea">{{ text }}</textarea>
+
+<script src="{% static 'django_BiJi/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>
