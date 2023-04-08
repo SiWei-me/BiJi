@@ -17,6 +17,8 @@ def main(request):
         info = f.read()
     info = json.loads(info)
     info_data = []
+    if not info['data']:
+        return render(request, 'main.html')
     for i in info['data']:
         summary = i['summary']
         if len(i['summary']) < 30:
@@ -47,7 +49,8 @@ def edit(request, page_id):
         print('Y')
         return render(request, 'edit.html', context={'text': text['text'],
                                                      'page_id': page_id,
-                                                     'page_name': info['data'][n]['summary']})
+                                                     'page_name': info['data'][n]['name'],
+                                                     'page_intr': info['data'][n]['summary']})
     return render(request, 'edit.html', context)
 
 

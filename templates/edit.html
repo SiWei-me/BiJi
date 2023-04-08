@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>增强记忆小助手</title>
+    <title>笔记 {{ page_name }}</title>
     <link rel="stylesheet" href="{% static 'django_BiJi/css/bootstrap.min.css' %}">
     <script src="{% static 'django_BiJi/js/tinymce.min.js' %}" referrerpolicy="origin"></script>
     <script src="{% static 'django_BiJi/js/jquery-3.6.4.min.js' %}" referrerpolicy="origin"></script>
     <script>
-        const page_id = '{{ page_id }}';
+        let page_id = '{{ page_id }}';
         let page_name = '{{ page_name }}';
-        let page_intr = '{{ pagr_intr }}';
+        let page_intr = '{{ page_intr }}';
         let name;
         let text;
         tinymce.init({
@@ -39,6 +39,7 @@
                   page_name:page_name,
                   text:text
               }, function(data,status){
+                  alert("保存成功！");
                   return 0;
               });
           });
@@ -71,7 +72,11 @@
                   text:text,
                   page_intr:page_intr
               }, function(data,status){
+                  let obj = JSON.parse(data);
+                  page_id = obj.page_id;
                   $($("#Newname")).modal("hide");
+                  $($("#Newintr")).modal("hide");
+                  window.location.href = "/main/"+page_id;
               });
           });
           $("#DeleteNote").click(function(){
@@ -97,7 +102,8 @@
                   page_name:page_name,
                   new_name:NewName
               }, function(data,status){
-                  alert(data+"\n"+status)
+                  $($("#Rename")).modal("hide");
+                  return 0;
               });
           });
           $("#RightReintr").click(function(){
@@ -109,7 +115,8 @@
                   page_name:page_name,
                   new_intr:NewIntr
               }, function(data,status){
-                  alert(data+"\n"+status)
+                  $($("#Reintr")).modal("hide");
+                  return 0;
               });
           });
         });

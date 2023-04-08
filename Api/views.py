@@ -36,7 +36,10 @@ def stave(request):
                 return HttpResponse('Ok')
 
     info['num'] = info['num'] + 1
-    id = int(info['data'][-1]['id']) + 1
+    try:
+        id = int(info['data'][-1]['id']) + 1
+    except:
+        id = 1
     info['data'].append({
         'id': id,
         'name': page_name,
@@ -46,7 +49,7 @@ def stave(request):
         f.write(json.dumps(info))
     with open(f'./data/{id}.json', 'w') as f:
         f.write(json.dumps({'text': text}))
-    return HttpResponse(json.dumps({'msg': 'Ok', 'page_id': id}))
+    return HttpResponse(json.dumps({'msg': 'Ok', 'page_id': str(id).zfill(6)}))
 
 
 @csrf_exempt
